@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indodax</title>
+</head>
+<body>
+    <script>
+        const link = "https://indodax.com/api/ticker/btcidr";
+        const link2 = "https://discord.com/api/webhooks/940634921616162906/pt-eeLH1d5CEW3W7Bik5zmMzE0L_qH9KvpeMj2JD0xvjltG9hUWI7V8TDRSLH0JFEsRs";
+        var interval = setInterval(()=>{
+            const x = new XMLHttpRequest();
+            x.open("GET", link);
+            x.onload = function(){
+                const r = new XMLHttpRequest();
+                r.open("POST", link2);
+                const json = JSON.parse(this.responseText).ticker;
+                const out = 
+                `\nHigh: ${json.high}\nLow: ${json.low}\nVol_btc: ${json.vol_btc}\nVol_idr: ${json.vol_idr}\nLast: ${json.last}\nBuy: ${json.buy}\nSell: ${json.sell}\n`
+                r.setRequestHeader("Content-Type", "application/json");
+                r.send(JSON.stringify({ content: out }));
+            }
+            x.send();
+        }, 10000)
+    </script>
+</body>
+</html>
